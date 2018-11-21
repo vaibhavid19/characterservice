@@ -5,7 +5,9 @@ import com.vaibhavi.characterservice.Repository.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class CharacterService {
@@ -23,26 +25,46 @@ public class CharacterService {
     }
 
     public CharacterForBattle getCharacterObjectValues(String characterClass) throws Exception {
+
+        int[] numbers = genRandomNumBetween(8, 18);
+        Arrays.sort(numbers);
         CharacterForBattle theCharacter = new CharacterForBattle();
-        theCharacter.setIntelligence(genRandomNumBetween(8,18));
-        theCharacter.setWisdom(genRandomNumBetween(8,18));
-        theCharacter.setCharacterPoints(genRandomNumBetween(8,18));
-        theCharacter.setStrength(genRandomNumBetween(8,18));
-        theCharacter.setDexterity(genRandomNumBetween(8,18));
-        theCharacter.setCon(genRandomNumBetween(8,18));
-        theCharacter.setLocation(genRandomNumBetween(8,18));
+
         if (characterClass.equals("Warrior")) {
-            theCharacter.setStrength(18);
-            theCharacter.setIntelligence(8);
+            theCharacter.setStrength(numbers[6]);
+            theCharacter.setIntelligence(numbers[0]);
+            theCharacter.setWisdom(numbers[1]);
+            theCharacter.setCharacterPoints(numbers[2]);
+            theCharacter.setDexterity(numbers[3]);
+            theCharacter.setCon(numbers[4]);
+            theCharacter.setLocation(numbers[5]);
+
         } else if (characterClass.equals("Archer")) {
-            theCharacter.setDexterity(18);
-            theCharacter.setCharacterPoints(8);
+            theCharacter.setDexterity(numbers[6]);
+            theCharacter.setCharacterPoints(numbers[0]);
+            theCharacter.setWisdom(numbers[1]);
+            theCharacter.setStrength(numbers[2]);
+            theCharacter.setIntelligence(numbers[3]);
+            theCharacter.setCon(numbers[4]);
+            theCharacter.setLocation(numbers[5]);
+
         } else if (characterClass.equals("Wizard")) {
-            theCharacter.setIntelligence(18);
-            theCharacter.setStrength(8);
+            theCharacter.setIntelligence(numbers[6]);
+            theCharacter.setStrength(numbers[0]);
+            theCharacter.setWisdom(numbers[1]);
+            theCharacter.setCharacterPoints(numbers[2]);
+            theCharacter.setDexterity(numbers[3]);
+            theCharacter.setCon(numbers[4]);
+            theCharacter.setLocation(numbers[5]);
+
         } else if (characterClass.equals("Rogue")) {
-            theCharacter.setCharacterPoints(18);
-            theCharacter.setStrength(8);
+            theCharacter.setCharacterPoints(numbers[6]);
+            theCharacter.setStrength(numbers[0]);
+            theCharacter.setWisdom(numbers[1]);
+            theCharacter.setIntelligence(numbers[2]);
+            theCharacter.setDexterity(numbers[3]);
+            theCharacter.setCon(numbers[4]);
+            theCharacter.setLocation(numbers[5]);
         } else {
             throw new Exception("The classname provided is not valid. Please provide from available list and try again.");
         }
@@ -54,8 +76,14 @@ public class CharacterService {
         return (List<CharacterForBattle>) this.characterRepository.findAll();
     }
 
-    public int genRandomNumBetween(int num1, int num2) {
+    public int[] genRandomNumBetween(int num1, int num2) {
+        int[] numbers = new int[7];
         int range = (num2 - num1) + 1;
-        return (int)(Math.random() * range) + num1;
+
+        for(int i = 0; i < 7; i++) {
+            numbers[i] = (int)(Math.random()*20 + 1);
+        }  
+                
+        return numbers;
     }
 }
