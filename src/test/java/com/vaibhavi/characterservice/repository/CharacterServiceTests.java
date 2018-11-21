@@ -2,6 +2,7 @@ package com.vaibhavi.characterservice.repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaibhavi.characterservice.Entity.CharacterForBattle;
 import com.vaibhavi.characterservice.Repository.CharacterRepository;
+import com.vaibhavi.characterservice.exception.CharacterNotFound;
 import com.vaibhavi.characterservice.service.CharacterService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +44,13 @@ public class CharacterServiceTests {
                 .thenReturn(testCharacter);
         characterService.generateCharacter("Snape", "Wizard");
         verify(characterRepositoryMock, times(1)).save(isA(CharacterForBattle.class));
+        verifyNoMoreInteractions(characterRepositoryMock);
+    }
+
+    @Test(expected=CharacterNotFound.class)
+    public void test_generateCharacterNotPresent() throws Exception {
+        CharacterForBattle testCharacter = new CharacterForBattle(1,"Mundungus","WeirdGuy",1,1,1,1,1,1,1,1);
+        characterService.generateCharacter("Mundungus", "WeirdGuy");
         verifyNoMoreInteractions(characterRepositoryMock);
     }
 }

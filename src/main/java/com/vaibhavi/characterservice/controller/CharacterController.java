@@ -21,4 +21,9 @@ public class CharacterController {
     public CharacterForBattle generateCharacter(@PathVariable String characterName, @PathVariable String characterClass) throws Exception {
         return characterService.generateCharacter(characterName, characterClass);
     }
+
+    @GetMapping("/get/{id}")
+    public CharacterForBattle getCharacterById(@PathVariable int id){
+        return characterService.getCharacterById(id);
+    }
 }

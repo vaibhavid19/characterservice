@@ -2,11 +2,13 @@ package com.vaibhavi.characterservice.service;
 
 import com.vaibhavi.characterservice.Entity.CharacterForBattle;
 import com.vaibhavi.characterservice.Repository.CharacterRepository;
+import com.vaibhavi.characterservice.exception.CharacterNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -66,7 +68,7 @@ public class CharacterService {
             theCharacter.setCon(numbers[4]);
             theCharacter.setLocation(numbers[5]);
         } else {
-            throw new Exception("The classname provided is not valid. Please provide from available list and try again.");
+            throw new CharacterNotFound("The classname provided is not valid. Please provide from available list and try again.");
         }
         theCharacter.setHitPoints(theCharacter.getCon()*2);
         return theCharacter;
@@ -85,5 +87,13 @@ public class CharacterService {
         }  
                 
         return numbers;
+    }
+
+    public CharacterForBattle getCharacterById(int id) {
+        Optional<CharacterForBattle> optCharacter = this.characterRepository.findById(id);
+        if (!optCharacter.isPresent()) {
+            throw new CharacterNotFound();
+        }
+        return optCharacter.get();
     }
 }
